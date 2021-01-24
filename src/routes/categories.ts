@@ -1,14 +1,15 @@
 import express from "express";
+import { Category } from "../models/category";
 import { handleApiError } from "../utils/handleApiError";
-import { Choice, validateChoice as validate } from "../models/choice";
+import { validateCategory as validate } from "../models/category";
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   try {
-    const choice = await Choice.findOne({ _id: req.params.id });
-    if (!choice) return res.status(404).send("Choice nor found");
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.status(404).send("Category not found");
 
-    res.send(choice);
+    res.send(category);
     return true;
   } catch (error) {
     handleApiError(error);
@@ -18,13 +19,13 @@ router.get("/:id", async (req, res) => {
 
 router.get("/", async (_, res) => {
   try {
-    const choices = await Choice.find();
-    if (!choices) return res.status(404).send("Choices not found");
+    const categories = await Category.find();
+    if (!categories) return res.status(404).send("Categories not found");
 
-    res.send(choices);
+    res.send(categories);
     return true;
   } catch (error) {
-    console.log(error.message);
+    handleApiError(error);
     return false;
   }
 });
@@ -34,11 +35,11 @@ router.post("/", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send("Bad request");
 
-    const newChoice = new Choice(req.body);
+    const newCategory = new Category(req.body);
 
-    await newChoice.save();
+    await newCategory.save();
 
-    res.send(newChoice);
+    res.send(newCategory);
     return true;
   } catch (error) {
     handleApiError(error);
@@ -51,12 +52,12 @@ router.put("/:id", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send("Bad request");
 
-    const choice = await Choice.findById(req.params._id);
-    if (!choice) return res.status(404).send("Choice not found");
+    const category = await Category.findById(req.params._id);
+    if (!category) return res.status(404).send("Category not found");
 
-    await choice.updateOne(req.body);
+    await category.updateOne(req.body);
 
-    res.send(choice);
+    res.send(category);
     return true;
   } catch (error) {
     handleApiError(error);
@@ -66,10 +67,10 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const choice = await Choice.findByIdAndDelete(req.params.id);
-    if (!choice) return res.status(404).send("Choice not found");
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) return res.status(404).send("Category not found");
 
-    res.send(choice);
+    res.send(category);
     return true;
   } catch (error) {
     handleApiError(error);
