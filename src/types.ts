@@ -9,3 +9,8 @@ export type IChoice = {
   title: string;
   proposals: IProposal[];
 };
+
+export type ICategory = {
+  title: string;
+  choices: IChoice[];
+};
