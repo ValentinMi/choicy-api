@@ -1,16 +1,18 @@
 export type IProposal = {
   title: string;
   imageUrl: string;
-  choicePercent: number;
+  chosen: number;
 };
 
 export type IChoice = {
-  category: string;
+  _id?: string;
+  category: ICategory;
   title: string;
   proposals: IProposal[];
+  vote: number;
 };
 
 export type ICategory = {
+  _id?: string;
   title: string;
-  choices: IChoice[];
 };

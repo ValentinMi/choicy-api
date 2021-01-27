@@ -1,44 +1,52 @@
 import mongoose from "mongoose";
 import Joi = require("joi");
 import { IChoice } from "src/types";
+import { categorySchema } from "./category";
 
-export const ChoiceSchema = new mongoose.Schema({
-  category: {
-    type: String,
-  },
-  title: {
-    type: String,
-    minlength: 2,
-    maxlength: 55,
-  },
-  proposals: {
-    type: {
-      title: {
-        type: String,
-        minlength: 2,
-        maxlength: 20,
-        required: true,
-      },
-      imageUrl: {
-        type: String,
-        required: true,
-      },
-      choicePercent: {
-        type: Number,
-        min: 0,
-        max: 100,
-      },
+export const choiceSchema: mongoose.SchemaDefinitionProperty<IChoice> = new mongoose.Schema(
+  {
+    category: {
+      type: categorySchema,
     },
-    length: 4,
-    required: true,
-  },
-});
+    title: {
+      type: String,
+      minlength: 2,
+      maxlength: 55,
+    },
+    proposals: {
+      type: {
+        title: {
+          type: String,
+          minlength: 2,
+          maxlength: 20,
+          required: true,
+        },
+        imageUrl: {
+          type: String,
+          required: true,
+        },
+        chosen: {
+          type: Number,
+          min: 0,
+          default: 0,
+        },
+      },
+      length: 4,
+      required: true,
+    },
+    vote: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+  }
+);
 
-export const Choice = mongoose.model("Choice", ChoiceSchema);
+export const Choice = mongoose.model("Choice", choiceSchema);
 
 export const validateChoice = (choice: IChoice) => {
   const schema = Joi.object({
-    category: Joi.string().required(),
+    categoryId: Joi.string().required(),
     title: Joi.string().min(2).max(55).required(),
     proposals: Joi.array()
       .items(
