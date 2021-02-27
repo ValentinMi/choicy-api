@@ -1,7 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { handleApiError } from "../utils/handleApiError";
 import { Choice, validateChoice as validate } from "../models/choice";
 import { Category } from "../models/category";
+import auth from "../middlewares/auth";
+import admin from "../middlewares/admin";
 const router = express.Router();
 
 router.put("/chosen/:id/:proposalIdx", async (req, res) => {
@@ -52,7 +54,7 @@ router.get("/", async (_, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [auth], [admin], async (req: Request, res: Response) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send("Bad request");
@@ -94,7 +96,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth], [admin], async (req: Request, res: Response) => {
   try {
     const choice = await Choice.findByIdAndDelete(req.params.id);
     if (!choice) return res.status(404).send("Choice not found");
