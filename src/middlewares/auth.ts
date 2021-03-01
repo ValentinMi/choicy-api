@@ -11,7 +11,7 @@ export default function auth(
   if (process.env.AUTH_REQUIRED === "true" && process.env.ENV !== "PROD")
     return next();
 
-  const token = req.header("choicy-auth-token");
+  const token = req.header(process.env.HTTP_TOKEN_HEADER);
   if (!token) return res.status(401).send("Access denied. No token provided");
 
   try {

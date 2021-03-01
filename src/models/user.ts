@@ -24,8 +24,6 @@ const userSchema = new mongoose.Schema({
   isAdmin: Boolean,
 });
 
-export const User: any = mongoose.model("User", userSchema);
-
 userSchema.methods.generateAuthToken = function (this: any) {
   const token = jwt.sign(
     {
@@ -37,6 +35,8 @@ userSchema.methods.generateAuthToken = function (this: any) {
   );
   return token;
 };
+
+export const User: any = mongoose.model("User", userSchema);
 
 export const validateUser = (user: IUser) => {
   const schema = Joi.object({

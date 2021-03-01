@@ -65,8 +65,8 @@ router.post("/", async (req, res) => {
     // Create JWT
     const token = newUser.generateAuthToken();
     res
-      .header("choicy-auth-token", token)
-      .header("access-control-expose-headers", "choicy-auth-token")
+      .header(process.env.HTTP_TOKEN_HEADER!, token)
+      .header("access-control-expose-headers", process.env.HTTP_TOKEN_HEADER!)
       .send(_.pick(newUser, ["_id", "username", "- password"]));
 
     return true;
