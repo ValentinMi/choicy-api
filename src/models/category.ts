@@ -1,6 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
-import { ICategory } from "src/types";
+import { ICategory } from "../types";
 
 export const categorySchema: mongoose.SchemaDefinitionProperty<ICategory> = new mongoose.Schema(
   {

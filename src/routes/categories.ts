@@ -1,7 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { Category } from "../models/category";
 import { handleApiError } from "../utils/handleApiError";
 import { validateCategory as validate } from "../models/category";
+import auth from "../middlewares/auth";
+import admin from "../middlewares/admin";
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
@@ -30,7 +32,7 @@ router.get("/", async (_, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [auth], [admin], async (req: Request, res: Response) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send("Bad request");
@@ -47,7 +49,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", [auth], [admin], async (req: Request, res: Response) => {
   try {
     const { error } = validate(req.body);
     if (error) return res.status(400).send("Bad request");
@@ -65,7 +67,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth], [admin], async (req: Request, res: Response) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
     if (!category) return res.status(404).send("Category not found");
