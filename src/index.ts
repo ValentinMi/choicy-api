@@ -8,8 +8,8 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+initCors(app);
 connectDb();
 routes(app);
-initCors(app);
 
 app.listen(PORT, () => console.log(`Server listen on port ${PORT}`));

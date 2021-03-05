@@ -16,3 +16,13 @@ export type ICategory = {
   _id?: string;
   title: string;
 };
+
+export type IUser = {
+  _id?: string;
+  username: string;
+  password?: string;
+  registerDate?: Date;
+  isAdmin: boolean;
+};
+
+export type RequestWithUser = any;
