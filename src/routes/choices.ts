@@ -4,7 +4,10 @@ import { Choice, validateChoice as validate } from "../models/choice";
 import { Category } from "../models/category";
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
+import initMulterStorage from "src/utils/initMulterStorage";
 const router = express.Router();
+
+// const storage = initMulterStorage();
 
 router.put("/chosen/:id/:proposalIdx", async (req, res) => {
   try {
@@ -56,22 +59,25 @@ router.get("/", async (_, res) => {
 
 router.post("/", [auth], [admin], async (req: Request, res: Response) => {
   try {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send("Bad request");
+    const formData = req.body;
+    console.log(formData);
 
-    const category = await Category.findById(req.body.categoryId);
-    if (!category) return res.status(400).send("Invalid category.");
+    // const { error } = validate(req.body);
+    // if (error) return res.status(400).send("Bad request");
 
-    const newChoice = new Choice({
-      category,
-      title: req.body.title,
-      proposals: req.body.proposals,
-    });
+    // const category = await Category.findById(req.body.categoryId);
+    // if (!category) return res.status(400).send("Invalid category.");
 
-    await newChoice.save();
+    // const newChoice = new Choice({
+    //   category,
+    //   title: req.body.title,
+    //   proposals: req.body.proposals,
+    // });
 
-    res.send(newChoice);
-    return true;
+    // await newChoice.save();
+
+    // res.send(newChoice);
+    // return true;
   } catch (error) {
     handleApiError(error);
     return false;

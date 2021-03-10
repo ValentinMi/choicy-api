@@ -8,6 +8,8 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+app.use(express.static(__dirname + "/public"));
+
 initCors(app);
 connectDb();
 routes(app);
