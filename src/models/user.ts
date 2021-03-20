@@ -1,9 +1,9 @@
 import Joi from "joi";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { IUser } from "../types";
 import jwt, { Secret } from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     minlength: 2,
@@ -36,7 +36,7 @@ userSchema.methods.generateAuthToken = function (this: any) {
   return token;
 };
 
-export const User: any = mongoose.model("User", userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);
 
 export const validateUser = (user: IUser) => {
   const schema = Joi.object({

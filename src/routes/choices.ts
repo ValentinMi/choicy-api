@@ -4,6 +4,7 @@ import { Choice, validateChoice as validate } from "../models/choice";
 import { Category } from "../models/category";
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
+
 const router = express.Router();
 
 router.put("/chosen/:id/:proposalIdx", async (req, res) => {
