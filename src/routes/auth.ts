@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     const validPassword = await bcrypt.compare(
       req.body.password,
-      user!.password
+      user!.password!
     );
 
     if (!user || !validPassword)
