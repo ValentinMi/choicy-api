@@ -1,14 +1,14 @@
 import { handleApiError } from "../utils/handleApiError";
 import jwt, { Secret } from "jsonwebtoken";
 import { Response, NextFunction } from "express";
-import { RequestWithUser } from "../types";
+import { RequestWithUser } from "src/types";
 
 export default function auth(
   req: RequestWithUser,
   res: Response,
   next: NextFunction
 ) {
-  if (process.env.AUTH_REQUIRED === "true" && process.env.ENV !== "PROD")
+  if (process.env.AUTH_REQUIRED === "false" && process.env.ENV !== "PROD")
     return next();
 
   const token = req.header(process.env.HTTP_TOKEN_HEADER);
