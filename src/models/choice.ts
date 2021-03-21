@@ -51,7 +51,6 @@ export const validateChoice = (choice: IChoice) => {
       .items(
         Joi.object({
           title: Joi.string().min(2).max(20).required(),
-          image: Joi.required(),
           choicePercent: Joi.number().min(0).max(100),
         })
       )
