@@ -6,6 +6,7 @@ import _ from "lodash";
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
 import { Response, Request } from "express";
+import { IUser } from "../types";
 
 const router = express.Router();
 
@@ -46,7 +47,7 @@ router.post("/", async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     // Destructure
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
     // Check if user already exist
     const existingUser = await User.findOne({ username });
@@ -54,8 +55,9 @@ router.post("/", async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
 
-    const newUser: any = new User({
-      username: username,
+    const newUser: IUser = new User({
+      username,
+      email,
       password: await bcrypt.hash(password, salt),
       registerDate: new Date().toJSON(),
     });
@@ -67,7 +69,7 @@ router.post("/", async (req, res) => {
     res
       .header(process.env.HTTP_TOKEN_HEADER!, token)
       .header("access-control-expose-headers", process.env.HTTP_TOKEN_HEADER!)
-      .send(_.pick(newUser, ["_id", "username", "- password"]));
+      .send(_.pick(newUser, ["_id", "username", "email", "- password"]));
 
     return true;
   } catch (error) {

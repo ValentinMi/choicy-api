@@ -10,6 +10,12 @@ const userSchema = new Schema({
     maxlength: 25,
     required: true,
   },
+  email: {
+    type: String,
+    minlength: 5,
+    maxlength: 100,
+    required: true,
+  },
   password: {
     type: String,
     required: true,
@@ -28,7 +34,7 @@ userSchema.methods.generateAuthToken = function (this: any) {
   const token = jwt.sign(
     {
       _id: this._id,
-      username: this.username,
+      email: this.email,
       isAdmin: this.isAdmin,
     },
     process.env.JWT_PRIVATE_KEY as Secret
@@ -41,6 +47,7 @@ export const User = mongoose.model<IUser>("User", userSchema);
 export const validateUser = (user: IUser) => {
   const schema = Joi.object({
     username: Joi.string().min(2).max(25).required(),
+    email: Joi.string().email().min(5).max(100).required(),
     password: Joi.string().min(8).max(255).required(),
   });
 
