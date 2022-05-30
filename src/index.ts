@@ -13,6 +13,9 @@ app.use(express.static(path.resolve("./uploads")));
 
 initCors(app);
 connectDb();
+
+app.get("/", (req, res) => res.send("Hello Choicy"))
+
 routes(app);
 
 app.listen(PORT, () => console.log(`Server listen on port ${PORT}`));
