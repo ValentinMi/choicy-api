@@ -36,6 +36,7 @@ userSchema.methods.generateAuthToken = function (this: any) {
       _id: this._id,
       email: this.email,
       isAdmin: this.isAdmin,
+      username: this.username,
     },
     process.env.JWT_PRIVATE_KEY as Secret
   );
