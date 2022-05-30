@@ -14,7 +14,7 @@ app.use(express.static(path.resolve("./uploads")));
 initCors(app);
 connectDb();
 
-app.get("/", (req, res) => res.send("Hello Choicy"))
+app.get("/", (_, res) => res.send("Hello Choicy"))
 
 routes(app);
 
